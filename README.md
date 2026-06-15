@@ -1,6 +1,6 @@
 # jmart-sandbox-images
 
-Public, pure-OSS build sources for the **JMart Studio sandbox** images and Features — the standardized
+Public, pure-OSS build sources for the **JMart Studio sandbox** images — the standardized
 environment JMart serves into *users'* projects. These are **not** the container that builds JMart
 Studio itself, and **not** plugin images.
 
@@ -18,7 +18,7 @@ Two principles drive every choice:
 ```
 L3   PROJECT      user's devcontainer.json + deps + bind-mount      most volatile, per-project
 L2   TOOLCHAIN    language Feature + version manager                per-image (here)
-L1½  DESKTOP      on-demand Feature (Xvfb/VNC + kvm.mjs)             opt-in (this repo: features/desktop)
+L1½  DESKTOP      on-demand virtual desktop (Xvfb/VNC + kvm.mjs)     ships WITH the app (not here)
 L1   AGENT CORE   static musl bundle, mounted read-only             ships WITH the app (not here)
 L0   OS BASE      mcr.microsoft.com/devcontainers/base:ubuntu-24.04 pulled, never built
 ```
@@ -56,14 +56,6 @@ No USB-into-VM passthrough; serial is passed through our existing infra (host se
 > **nvm**. `match-toolchain node` uses nvm. If fnm's speed matters we can bake it via a small Containerfile
 > layer later — it changes nothing for consumers.
 
-## Features
-
-- `features/src/desktop/` → `ghcr.io/jmdisuanco/jmart-sandbox-images/desktop` — a contained headless
-  desktop (Xvfb + fluxbox + x11vnc + noVNC) for LLM agent computer-use. The agent drives *this* display,
-  never the host. The sandbox manager adds it **on demand** (when a session requests the `desktop`
-  capability) and caches the per-language variant. Pairs with the agent-core `kvm.mjs` (scrot/xdotool).
-  Published via `.github/workflows/publish-features.yml`.
-
 ## What the app injects at launch (NOT baked here)
 
 The sandbox manager (in the private app) hydrates each image per session:
@@ -73,7 +65,8 @@ The sandbox manager (in the private app) hydrates each image per session:
 - runs `postCreate: /opt/jmart-agent/bin/match-toolchain <lang>` to match the project's declared version
   (`.python-version`/`pyproject`, `.nvmrc`/`engines`, `go.mod`, `rust-toolchain.toml`);
 - bind-mounts the project (rw) + attaches the disposable env volume (deps);
-- adds the `desktop` Feature only when the session requests it.
+- adds the on-demand **desktop** overlay (which ships with the app, not here) only when the session
+  requests the `desktop` capability.
 
 A project's own `.devcontainer/devcontainer.json` is honored as-is — agent-core is mounted, not injected,
 so the user's build is untouched.
