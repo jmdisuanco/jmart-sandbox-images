@@ -1,0 +1,9 @@
+{
+	// JMart Sandbox — MicroPython. Build source for ghcr.io/jmdisuanco/sandbox-micropython.
+	// mpremote (the official MicroPython device tool) + esptool for firmware flashing.
+	"name": "JMart Sandbox — MicroPython",
+	"build": { "dockerfile": "Containerfile" },
+	"remoteUser": "vscode"
+	// Serial: `socat` is baked so the host serial service bridges to /dev/ttyJMART in-container
+	// (passed through our infra — no USB passthrough). `mpremote connect /dev/ttyJMART …`.
+}

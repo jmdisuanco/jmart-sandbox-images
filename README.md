@@ -38,6 +38,7 @@ L0   OS BASE      mcr.microsoft.com/devcontainers/base:ubuntu-24.04 pulled, neve
 | `sandbox-arduino/`| `ghcr.io/jmdisuanco/sandbox-arduino`    | `arduino-cli` + `socat` (Containerfile) — MCU |
 | `sandbox-platformio/` | `ghcr.io/jmdisuanco/sandbox-platformio` | PlatformIO core (venv) + `socat` (Containerfile) — MCU |
 | `sandbox-esp/`    | `ghcr.io/jmdisuanco/sandbox-esp`        | esptool/espefuse/espsecure (venv) + `socat` (Containerfile) — MCU |
+| `sandbox-micropython/` | `ghcr.io/jmdisuanco/sandbox-micropython` | mpremote + esptool (venv) + `socat` (Containerfile) — MCU |
 
 Feature-based images are `FROM …/base:ubuntu-24.04` + the official/community Feature; toolchains without
 a maintained Feature (C/C++, arduino-cli, PlatformIO, esptools) bake via a `Containerfile`. All pinned,

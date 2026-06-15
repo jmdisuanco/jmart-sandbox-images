@@ -1,0 +1,12 @@
+# JMart Sandbox — MicroPython tooling: mpremote (REPL/file sync/run on-device) + esptool (firmware
+# flashing), in an isolated venv on PATH. `socat` bridges the host serial port to an in-container PTY.
+FROM mcr.microsoft.com/devcontainers/base:ubuntu-24.04
+
+RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
+ && apt-get install -y --no-install-recommends python3 python3-venv socat \
+ && python3 -m venv /opt/micropython \
+ && /opt/micropython/bin/pip install --no-cache-dir -U mpremote esptool \
+ && for f in /opt/micropython/bin/mpremote /opt/micropython/bin/esp*; do \
+      ln -s "$f" "/usr/local/bin/$(basename "$f")"; done \
+ && mpremote version \
+ && apt-get clean && rm -rf /var/lib/apt/lists/*
