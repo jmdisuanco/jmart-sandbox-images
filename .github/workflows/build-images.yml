@@ -1,0 +1,61 @@
+name: build-images
+
+# Build + publish the JMart sandbox language images to GHCR (public).
+# PRs validate an amd64 build (no push); main / manual dispatch build multi-arch and push.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "sandbox-*/**"
+      - ".github/workflows/build-images.yml"
+  pull_request:
+    paths:
+      - "sandbox-*/**"
+      - ".github/workflows/build-images.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  images:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        lang: [base, node, python, go, rust]
+    steps:
+      - uses: actions/checkout@v4
+
+      # QEMU + buildx give us linux/arm64 (Apple-Silicon sandbox VM) alongside amd64.
+      - uses: docker/setup-qemu-action@v3
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GHCR
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install the Dev Containers CLI
+        run: npm install -g @devcontainers/cli
+
+      - name: Build sandbox-${{ matrix.lang }} (push on non-PR, multi-arch)
+        run: |
+          set -euo pipefail
+          PLATFORM="linux/amd64"
+          PUSH=""
+          if [ "${{ github.event_name }}" != "pull_request" ]; then
+            PLATFORM="linux/amd64,linux/arm64"
+            PUSH="--push"
+          fi
+          devcontainer build \
+            --workspace-folder "sandbox-${{ matrix.lang }}" \
+            --config "sandbox-${{ matrix.lang }}/devcontainer.json" \
+            --image-name "ghcr.io/jmdisuanco/sandbox-${{ matrix.lang }}:latest" \
+            --platform "$PLATFORM" \
+            $PUSH

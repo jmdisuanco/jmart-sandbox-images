@@ -1,0 +1,18 @@
+{
+	// JMart Sandbox — Rust. Build source for ghcr.io/jmdisuanco/sandbox-rust.
+	"name": "JMart Sandbox — Rust",
+
+	// L0 — uniform base, pinned.
+	"image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
+
+	// L2 — Rust toolchain via the official Feature, which bakes rustup + the stable toolchain.
+	// match-toolchain reads rust-toolchain.toml / rust-toolchain and runs `rustup toolchain install`.
+	"features": {
+		"ghcr.io/devcontainers/features/rust:1": {}
+	},
+
+	"remoteUser": "vscode"
+
+	// Agent-core mount + postCreate (match-toolchain rust) + project mount + env volume +
+	// optional desktop are injected by the manager at launch.
+}

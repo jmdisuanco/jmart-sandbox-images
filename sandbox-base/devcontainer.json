@@ -1,0 +1,14 @@
+{
+	// JMart Sandbox — general fallback (base only, no language toolchain).
+	// Build source for ghcr.io/jmdisuanco/sandbox-base. Used for unknown / polyglot projects.
+	//
+	// Pure OSS: agent-core is NOT baked here. The sandbox manager injects it AT LAUNCH
+	// (mount ro at /opt/jmart-agent) along with the project bind-mount, the disposable env
+	// volume, and the desktop Feature when a session requests it.
+	"name": "JMart Sandbox — Base",
+
+	// L0 — one uniform base across every language image, pinned for reproducibility.
+	"image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
+
+	"remoteUser": "vscode"
+}

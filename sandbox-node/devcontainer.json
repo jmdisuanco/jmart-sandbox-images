@@ -1,0 +1,22 @@
+{
+	// JMart Sandbox — Node/TS. Build source for ghcr.io/jmdisuanco/sandbox-node.
+	"name": "JMart Sandbox — Node",
+
+	// L0 — uniform base, pinned.
+	"image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
+
+	// L2 — Node toolchain via the official Feature (bakes Node LTS + nvm).
+	//
+	// SPEC DEVIATION (flagged for review): the spec names *fnm* as the Node version manager,
+	// but there is no maintained `fnm` Dev Container Feature (devcontainers-extra/fnm = 404).
+	// The official node Feature ships nvm, so match-toolchain uses nvm for now. If fnm's speed
+	// matters we can bake it via a small Containerfile layer in a follow-up — no API change.
+	"features": {
+		"ghcr.io/devcontainers/features/node:1": { "version": "lts" }
+	},
+
+	"remoteUser": "vscode"
+
+	// Agent-core mount + postCreate (match-toolchain node, reads .nvmrc / package.json engines)
+	// + project mount + env volume + optional desktop are injected by the manager at launch.
+}

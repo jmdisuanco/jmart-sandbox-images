@@ -1,0 +1,19 @@
+{
+	// JMart Sandbox — Go. Build source for ghcr.io/jmdisuanco/sandbox-go.
+	"name": "JMart Sandbox — Go",
+
+	// L0 — uniform base, pinned.
+	"image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
+
+	// L2 — Go toolchain via the official Feature. Go needs no separate version manager:
+	// the `go`/`toolchain` directives in go.mod let the baked `go` auto-fetch the declared
+	// version on build, so match-toolchain just sets GOTOOLCHAIN from go.mod.
+	"features": {
+		"ghcr.io/devcontainers/features/go:1": { "version": "1.22" }
+	},
+
+	"remoteUser": "vscode"
+
+	// Agent-core mount + postCreate (match-toolchain go) + project mount + env volume +
+	// optional desktop are injected by the manager at launch.
+}

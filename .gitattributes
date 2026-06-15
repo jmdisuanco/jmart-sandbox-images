@@ -1,0 +1,6 @@
+# These sources are consumed on Linux (Dev Container builds, CI). Force LF everywhere so
+# shell scripts never ship with CRLF (which breaks the shebang on Linux).
+* text=auto eol=lf
+*.sh text eol=lf
+*.json text eol=lf
+*.yml text eol=lf

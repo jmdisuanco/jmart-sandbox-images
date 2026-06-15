@@ -1,0 +1,70 @@
+# jmart-sandbox-images
+
+Public, pure-OSS build sources for the **JMart Studio sandbox** images and Features — the standardized
+environment JMart serves into *users'* projects. These are **not** the container that builds JMart
+Studio itself, and **not** plugin images.
+
+Two principles drive every choice:
+
+1. **Uniform floor** — the agent stands on an identical base in every sandbox, so its behavior doesn't
+   vary by language.
+2. **Pure images, mounted IP** — everything published here is pure OSS. JMart's proprietary
+   **agent-core** is *mounted in read-only at runtime* by the app, **never baked** into these images.
+   Agent updates ship as a new mounted bundle with zero image rebuilds, and no JMart IP ever lands in a
+   public image.
+
+## Layer model
+
+```
+L3   PROJECT      user's devcontainer.json + deps + bind-mount      most volatile, per-project
+L2   TOOLCHAIN    language Feature + version manager                per-image (here)
+L1½  DESKTOP      on-demand Feature (Xvfb/VNC + kvm.mjs)             opt-in (this repo: features/desktop)
+L1   AGENT CORE   static musl bundle, mounted read-only             ships WITH the app (not here)
+L0   OS BASE      mcr.microsoft.com/devcontainers/base:ubuntu-24.04 pulled, never built
+```
+
+## Images
+
+| Source | Publishes | Toolchain |
+|---|---|---|
+| `sandbox-base/`   | `ghcr.io/jmdisuanco/sandbox-base`   | none (general fallback / polyglot) |
+| `sandbox-node/`   | `ghcr.io/jmdisuanco/sandbox-node`   | node Feature (Node LTS + nvm) — see note |
+| `sandbox-python/` | `ghcr.io/jmdisuanco/sandbox-python` | python Feature + `uv` |
+| `sandbox-go/`     | `ghcr.io/jmdisuanco/sandbox-go`     | go Feature (GOTOOLCHAIN auto-fetch) |
+| `sandbox-rust/`   | `ghcr.io/jmdisuanco/sandbox-rust`   | rust Feature (rustup + stable) |
+
+Each is `FROM mcr.microsoft.com/devcontainers/base:ubuntu-24.04` + the official language Feature, pinned
+for reproducibility. Built with `devcontainer build --push` (see `.github/workflows/build-images.yml`),
+multi-arch `linux/amd64,linux/arm64` (arm64 covers the Apple-Silicon sandbox VM).
+
+> **Node version-manager note (spec deviation, flagged):** the spec names **fnm**, but there is no
+> maintained `fnm` Dev Container Feature, so `sandbox-node` uses the official node Feature, which bakes
+> **nvm**. `match-toolchain node` uses nvm. If fnm's speed matters we can bake it via a small Containerfile
+> layer later — it changes nothing for consumers.
+
+## Features
+
+- `features/src/desktop/` → `ghcr.io/jmdisuanco/jmart-sandbox-images/desktop` — a contained headless
+  desktop (Xvfb + fluxbox + x11vnc + noVNC) for LLM agent computer-use. The agent drives *this* display,
+  never the host. The sandbox manager adds it **on demand** (when a session requests the `desktop`
+  capability) and caches the per-language variant. Pairs with the agent-core `kvm.mjs` (scrot/xdotool).
+  Published via `.github/workflows/publish-features.yml`.
+
+## What the app injects at launch (NOT baked here)
+
+The sandbox manager (in the private app) hydrates each image per session:
+
+- mounts **agent-core** read-only at `/opt/jmart-agent` (`source=${localEnv:JMART_AGENT_CORE}`) and
+  prepends `/opt/jmart-agent/bin` to `PATH`;
+- runs `postCreate: /opt/jmart-agent/bin/match-toolchain <lang>` to match the project's declared version
+  (`.python-version`/`pyproject`, `.nvmrc`/`engines`, `go.mod`, `rust-toolchain.toml`);
+- bind-mounts the project (rw) + attaches the disposable env volume (deps);
+- adds the `desktop` Feature only when the session requests it.
+
+A project's own `.devcontainer/devcontainer.json` is honored as-is — agent-core is mounted, not injected,
+so the user's build is untouched.
+
+## License & provenance
+
+Repo sources: MIT (see `LICENSE`). The published images **redistribute** upstream OSS (the base image,
+Dev Container Features); their licenses + an SBOM are tracked in `NOTICE.md` (work in progress).

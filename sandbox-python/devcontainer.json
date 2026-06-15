@@ -1,0 +1,24 @@
+{
+	// JMart Sandbox — Python. Build source for ghcr.io/jmdisuanco/sandbox-python.
+	// Canonical shape — Node / Go / Rust are identical, swapping the language Feature.
+	"name": "JMart Sandbox — Python",
+
+	// L0 — uniform base, pinned.
+	"image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
+
+	// L2 — language toolchain via the official Feature + a fast version manager (uv).
+	// uv pulls prebuilt CPython, so version switching on create is fast (no source compile).
+	"features": {
+		"ghcr.io/devcontainers/features/python:1": { "version": "3.12" },
+		"ghcr.io/devcontainers-extra/features/uv:1": {}
+	},
+
+	"remoteUser": "vscode"
+
+	// Injected by the sandbox manager AT LAUNCH — deliberately NOT baked here:
+	//   • L1 agent-core: mount ${localEnv:JMART_AGENT_CORE} ro at /opt/jmart-agent, prepend to PATH
+	//   • postCreate: /opt/jmart-agent/bin/match-toolchain python  (reads .python-version / pyproject)
+	//   • project bind-mount (rw) + disposable env volume (deps)
+	//   • L1½ desktop Feature, only when the session requests the `desktop` capability
+	//   • LSP: handled by the sibling container sharing the env volume
+}
