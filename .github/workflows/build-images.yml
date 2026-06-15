@@ -53,9 +53,12 @@ jobs:
             PLATFORM="linux/amd64,linux/arm64"
             PUSH="--push"
           fi
+          # Nest under the repo (ghcr.io/<owner>/jmart-sandbox-images/…) + link via the source label,
+          # so the image packages group with the desktop Feature and are managed/made-public the same way.
           devcontainer build \
             --workspace-folder "sandbox-${{ matrix.lang }}" \
             --config "sandbox-${{ matrix.lang }}/devcontainer.json" \
-            --image-name "ghcr.io/jmdisuanco/sandbox-${{ matrix.lang }}:latest" \
+            --image-name "ghcr.io/jmdisuanco/jmart-sandbox-images/sandbox-${{ matrix.lang }}:latest" \
+            --label "org.opencontainers.image.source=https://github.com/jmdisuanco/jmart-sandbox-images" \
             --platform "$PLATFORM" \
             $PUSH

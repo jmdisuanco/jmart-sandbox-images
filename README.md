@@ -27,18 +27,18 @@ L0   OS BASE      mcr.microsoft.com/devcontainers/base:ubuntu-24.04 pulled, neve
 
 | Source | Publishes | Toolchain |
 |---|---|---|
-| `sandbox-base/`   | `ghcr.io/jmdisuanco/sandbox-base`       | none (general fallback / polyglot) |
-| `sandbox-node/`   | `ghcr.io/jmdisuanco/sandbox-node`       | node Feature (Node LTS + nvm) — see note |
-| `sandbox-python/` | `ghcr.io/jmdisuanco/sandbox-python`     | python Feature + `uv` |
-| `sandbox-go/`     | `ghcr.io/jmdisuanco/sandbox-go`         | go Feature (GOTOOLCHAIN auto-fetch) |
-| `sandbox-rust/`   | `ghcr.io/jmdisuanco/sandbox-rust`       | rust Feature (rustup + stable) |
-| `sandbox-cpp/`    | `ghcr.io/jmdisuanco/sandbox-cpp`        | C/C++: build-essential, clang, cmake, ninja, gdb/lldb (Containerfile) |
-| `sandbox-java/`   | `ghcr.io/jmdisuanco/sandbox-java`       | java Feature (LTS JDK + Maven + Gradle) |
-| `sandbox-zig/`    | `ghcr.io/jmdisuanco/sandbox-zig`        | zig Feature (incl. `zig cc`) |
-| `sandbox-arduino/`| `ghcr.io/jmdisuanco/sandbox-arduino`    | `arduino-cli` + `socat` (Containerfile) — MCU |
-| `sandbox-platformio/` | `ghcr.io/jmdisuanco/sandbox-platformio` | PlatformIO core (venv) + `socat` (Containerfile) — MCU |
-| `sandbox-esp/`    | `ghcr.io/jmdisuanco/sandbox-esp`        | esptool/espefuse/espsecure (venv) + `socat` (Containerfile) — MCU |
-| `sandbox-micropython/` | `ghcr.io/jmdisuanco/sandbox-micropython` | mpremote + esptool (venv) + `socat` (Containerfile) — MCU |
+| `sandbox-base/`   | `ghcr.io/jmdisuanco/jmart-sandbox-images/sandbox-base`       | none (general fallback / polyglot) |
+| `sandbox-node/`   | `ghcr.io/jmdisuanco/jmart-sandbox-images/sandbox-node`       | node Feature (Node LTS + nvm) — see note |
+| `sandbox-python/` | `ghcr.io/jmdisuanco/jmart-sandbox-images/sandbox-python`     | python Feature + `uv` |
+| `sandbox-go/`     | `ghcr.io/jmdisuanco/jmart-sandbox-images/sandbox-go`         | go Feature (GOTOOLCHAIN auto-fetch) |
+| `sandbox-rust/`   | `ghcr.io/jmdisuanco/jmart-sandbox-images/sandbox-rust`       | rust Feature (rustup + stable) |
+| `sandbox-cpp/`    | `ghcr.io/jmdisuanco/jmart-sandbox-images/sandbox-cpp`        | C/C++: build-essential, clang, cmake, ninja, gdb/lldb (Containerfile) |
+| `sandbox-java/`   | `ghcr.io/jmdisuanco/jmart-sandbox-images/sandbox-java`       | java Feature (LTS JDK + Maven + Gradle) |
+| `sandbox-zig/`    | `ghcr.io/jmdisuanco/jmart-sandbox-images/sandbox-zig`        | zig Feature (incl. `zig cc`) |
+| `sandbox-arduino/`| `ghcr.io/jmdisuanco/jmart-sandbox-images/sandbox-arduino`    | `arduino-cli` + `socat` (Containerfile) — MCU |
+| `sandbox-platformio/` | `ghcr.io/jmdisuanco/jmart-sandbox-images/sandbox-platformio` | PlatformIO core (venv) + `socat` (Containerfile) — MCU |
+| `sandbox-esp/`    | `ghcr.io/jmdisuanco/jmart-sandbox-images/sandbox-esp`        | esptool/espefuse/espsecure (venv) + `socat` (Containerfile) — MCU |
+| `sandbox-micropython/` | `ghcr.io/jmdisuanco/jmart-sandbox-images/sandbox-micropython` | mpremote + esptool (venv) + `socat` (Containerfile) — MCU |
 
 Feature-based images are `FROM …/base:ubuntu-24.04` + the official/community Feature; toolchains without
 a maintained Feature (C/C++, arduino-cli, PlatformIO, esptools) bake via a `Containerfile`. All pinned,
