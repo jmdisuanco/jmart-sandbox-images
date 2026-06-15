@@ -1,0 +1,13 @@
+{
+	// JMart Sandbox — Zig. Build source for ghcr.io/jmdisuanco/sandbox-zig.
+	"name": "JMart Sandbox — Zig",
+
+	"image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
+
+	// L2 — Zig (+ its bundled `zig cc` C compiler) via the community Feature.
+	"features": {
+		"ghcr.io/devcontainers-extra/features/zig:1": {}
+	},
+
+	"remoteUser": "vscode"
+}

@@ -1,0 +1,9 @@
+{
+	// JMart Sandbox — PlatformIO. Build source for ghcr.io/jmdisuanco/sandbox-platformio.
+	// No maintained Dev Container Feature, so PlatformIO core is baked via Containerfile.
+	"name": "JMart Sandbox — PlatformIO",
+	"build": { "dockerfile": "Containerfile" },
+	"remoteUser": "vscode"
+	// Serial: `socat` is baked so the host serial service bridges to /dev/ttyJMART in-container
+	// (passed through our infra — no USB passthrough). Building works fully in-container.
+}

@@ -1,0 +1,9 @@
+{
+	// JMart Sandbox — C / C++. Build source for ghcr.io/jmdisuanco/sandbox-cpp.
+	// One image serves both C and C++ (gcc compiles C, g++ C++; both from build-essential).
+	// No single official toolchain Feature exists for C/C++, so the toolchain is baked via Containerfile.
+	"name": "JMart Sandbox — C / C++",
+	"build": { "dockerfile": "Containerfile" },
+	"remoteUser": "vscode"
+	// Agent-core mount + match-toolchain + project mount + optional desktop injected by the manager.
+}

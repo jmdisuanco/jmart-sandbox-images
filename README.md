@@ -27,15 +27,28 @@ L0   OS BASE      mcr.microsoft.com/devcontainers/base:ubuntu-24.04 pulled, neve
 
 | Source | Publishes | Toolchain |
 |---|---|---|
-| `sandbox-base/`   | `ghcr.io/jmdisuanco/sandbox-base`   | none (general fallback / polyglot) |
-| `sandbox-node/`   | `ghcr.io/jmdisuanco/sandbox-node`   | node Feature (Node LTS + nvm) — see note |
-| `sandbox-python/` | `ghcr.io/jmdisuanco/sandbox-python` | python Feature + `uv` |
-| `sandbox-go/`     | `ghcr.io/jmdisuanco/sandbox-go`     | go Feature (GOTOOLCHAIN auto-fetch) |
-| `sandbox-rust/`   | `ghcr.io/jmdisuanco/sandbox-rust`   | rust Feature (rustup + stable) |
+| `sandbox-base/`   | `ghcr.io/jmdisuanco/sandbox-base`       | none (general fallback / polyglot) |
+| `sandbox-node/`   | `ghcr.io/jmdisuanco/sandbox-node`       | node Feature (Node LTS + nvm) — see note |
+| `sandbox-python/` | `ghcr.io/jmdisuanco/sandbox-python`     | python Feature + `uv` |
+| `sandbox-go/`     | `ghcr.io/jmdisuanco/sandbox-go`         | go Feature (GOTOOLCHAIN auto-fetch) |
+| `sandbox-rust/`   | `ghcr.io/jmdisuanco/sandbox-rust`       | rust Feature (rustup + stable) |
+| `sandbox-cpp/`    | `ghcr.io/jmdisuanco/sandbox-cpp`        | C/C++: build-essential, clang, cmake, ninja, gdb/lldb (Containerfile) |
+| `sandbox-java/`   | `ghcr.io/jmdisuanco/sandbox-java`       | java Feature (LTS JDK + Maven + Gradle) |
+| `sandbox-zig/`    | `ghcr.io/jmdisuanco/sandbox-zig`        | zig Feature (incl. `zig cc`) |
+| `sandbox-arduino/`| `ghcr.io/jmdisuanco/sandbox-arduino`    | `arduino-cli` + `socat` (Containerfile) — MCU |
+| `sandbox-platformio/` | `ghcr.io/jmdisuanco/sandbox-platformio` | PlatformIO core (venv) + `socat` (Containerfile) — MCU |
+| `sandbox-esp/`    | `ghcr.io/jmdisuanco/sandbox-esp`        | esptool/espefuse/espsecure (venv) + `socat` (Containerfile) — MCU |
 
-Each is `FROM mcr.microsoft.com/devcontainers/base:ubuntu-24.04` + the official language Feature, pinned
-for reproducibility. Built with `devcontainer build --push` (see `.github/workflows/build-images.yml`),
-multi-arch `linux/amd64,linux/arm64` (arm64 covers the Apple-Silicon sandbox VM).
+Feature-based images are `FROM …/base:ubuntu-24.04` + the official/community Feature; toolchains without
+a maintained Feature (C/C++, arduino-cli, PlatformIO, esptools) bake via a `Containerfile`. All pinned,
+built with `devcontainer build --push` (see `.github/workflows/build-images.yml`), multi-arch
+`linux/amd64,linux/arm64` (arm64 covers the Apple-Silicon sandbox VM).
+
+**MCU images & serial:** `sandbox-{arduino,platformio,esp}` bake `socat` so the **host** serial service
+(the existing Serial Monitor's Rust layer, sole owner of the physical port) can be **bridged** to an
+in-container PTY (`/dev/ttyJMART`) over the sandbox exec channel — the build/flash tools open that path.
+No USB-into-VM passthrough; serial is passed through our existing infra (host serial service + the same
+`podman exec` stdio pipe the port-forwarder uses). The wiring + the serial footer UI live in the app.
 
 > **Node version-manager note (spec deviation, flagged):** the spec names **fnm**, but there is no
 > maintained `fnm` Dev Container Feature, so `sandbox-node` uses the official node Feature, which bakes

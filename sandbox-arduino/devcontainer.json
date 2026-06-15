@@ -1,0 +1,9 @@
+{
+	// JMart Sandbox — Arduino. Build source for ghcr.io/jmdisuanco/sandbox-arduino.
+	// arduino-cli has no maintained Dev Container Feature, so it's baked via Containerfile.
+	"name": "JMart Sandbox — Arduino",
+	"build": { "dockerfile": "Containerfile" },
+	"remoteUser": "vscode"
+	// NOTE: flashing a real board needs host USB passthrough at run time (a runtime/capability concern,
+	// not baked here); building/compiling sketches works fully in-container.
+}

@@ -1,0 +1,12 @@
+# JMart Sandbox — Espressif esptools (esptool/espefuse/espsecure) in an isolated venv, on PATH.
+# `socat` bridges the host serial port to an in-container PTY (no USB passthrough); esptool also
+# supports `--port rfc2217://…` directly.
+FROM mcr.microsoft.com/devcontainers/base:ubuntu-24.04
+
+RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
+ && apt-get install -y --no-install-recommends python3 python3-venv socat \
+ && python3 -m venv /opt/esptool \
+ && /opt/esptool/bin/pip install --no-cache-dir -U esptool \
+ && for f in /opt/esptool/bin/esp*; do ln -s "$f" "/usr/local/bin/$(basename "$f")"; done \
+ && (esptool.py version || esptool version) \
+ && apt-get clean && rm -rf /var/lib/apt/lists/*

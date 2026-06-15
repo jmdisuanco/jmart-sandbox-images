@@ -1,0 +1,12 @@
+# JMart Sandbox — PlatformIO core in an isolated venv (Ubuntu 24.04 is PEP-668 externally-managed),
+# symlinked onto PATH. `socat` bridges the host serial port to an in-container PTY (no USB passthrough).
+FROM mcr.microsoft.com/devcontainers/base:ubuntu-24.04
+
+RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
+ && apt-get install -y --no-install-recommends python3 python3-venv socat \
+ && python3 -m venv /opt/pio \
+ && /opt/pio/bin/pip install --no-cache-dir -U platformio \
+ && ln -s /opt/pio/bin/platformio /usr/local/bin/platformio \
+ && ln -s /opt/pio/bin/pio /usr/local/bin/pio \
+ && pio --version \
+ && apt-get clean && rm -rf /var/lib/apt/lists/*

@@ -1,0 +1,11 @@
+# JMart Sandbox — Arduino (arduino-cli). The official install script is arch-aware (amd64/arm64).
+# `socat` is baked in so the host serial service can be bridged to an in-container PTY (/dev/ttyJMART)
+# over the sandbox exec channel — no USB passthrough (see the serial-bridge design).
+FROM mcr.microsoft.com/devcontainers/base:ubuntu-24.04
+
+RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
+ && apt-get install -y --no-install-recommends socat \
+ && apt-get clean && rm -rf /var/lib/apt/lists/* \
+ && curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh \
+      | BINDIR=/usr/local/bin sh \
+ && arduino-cli version

@@ -1,0 +1,10 @@
+{
+	// JMart Sandbox — ESP tools. Build source for ghcr.io/jmdisuanco/sandbox-esp.
+	// Ships esptool / espefuse / espsecure (the Espressif flashing + image tools). For the full
+	// ESP-IDF build framework (xtensa-esp-elf-gcc, multi-GB) use sandbox-platformio, or layer IDF on.
+	"name": "JMart Sandbox — ESP (esptools)",
+	"build": { "dockerfile": "Containerfile" },
+	"remoteUser": "vscode"
+	// Serial: `socat` is baked so the host serial service bridges to /dev/ttyJMART in-container
+	// (passed through our infra — no USB passthrough). esptool also speaks rfc2217 natively.
+}

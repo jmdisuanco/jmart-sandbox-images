@@ -25,7 +25,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        lang: [base, node, python, go, rust]
+        lang: [base, node, python, go, rust, cpp, java, zig, arduino, platformio, esp]
     steps:
       - uses: actions/checkout@v4
 

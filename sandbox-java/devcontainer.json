@@ -1,0 +1,18 @@
+{
+	// JMart Sandbox — Java. Build source for ghcr.io/jmdisuanco/sandbox-java.
+	"name": "JMart Sandbox — Java",
+
+	"image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
+
+	// L2 — JDK (LTS) + Maven + Gradle via the official Feature (SDKMAN under the hood, so
+	// match-toolchain can switch to the project's declared JDK on create).
+	"features": {
+		"ghcr.io/devcontainers/features/java:1": {
+			"version": "lts",
+			"installMaven": true,
+			"installGradle": true
+		}
+	},
+
+	"remoteUser": "vscode"
+}
