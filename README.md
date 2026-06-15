@@ -18,7 +18,7 @@ Two principles drive every choice:
 ```
 L3   PROJECT      user's devcontainer.json + deps + bind-mount      most volatile, per-project
 L2   TOOLCHAIN    language Feature + version manager                per-image (here)
-L1½  DESKTOP      on-demand virtual desktop (Xvfb/VNC + kvm.mjs)     ships WITH the app (not here)
+L1½  DESKTOP      on-demand, opt-in desktop (Xvfb/VNC + kvm.mjs)     ships WITH the app (not here)
 L1   AGENT CORE   static musl bundle, mounted read-only             ships WITH the app (not here)
 L0   OS BASE      mcr.microsoft.com/devcontainers/base:ubuntu-24.04 pulled, never built
 ```
