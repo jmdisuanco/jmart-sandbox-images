@@ -11,7 +11,8 @@
 			"version": "lts",
 			"installMaven": true,
 			"installGradle": true
-		}
+		},
+		"ghcr.io/devcontainers-extra/features/apt-get-packages:1": { "packages": "socat" }
 	},
 
 	"remoteUser": "vscode"

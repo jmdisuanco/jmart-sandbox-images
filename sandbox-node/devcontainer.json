@@ -12,7 +12,8 @@
 	// The official node Feature ships nvm, so match-toolchain uses nvm for now. If fnm's speed
 	// matters we can bake it via a small Containerfile layer in a follow-up — no API change.
 	"features": {
-		"ghcr.io/devcontainers/features/node:1": { "version": "lts" }
+		"ghcr.io/devcontainers/features/node:1": { "version": "lts" },
+		"ghcr.io/devcontainers-extra/features/apt-get-packages:1": { "packages": "socat" }
 	},
 
 	"remoteUser": "vscode"

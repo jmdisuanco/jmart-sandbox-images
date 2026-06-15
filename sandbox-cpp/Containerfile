@@ -6,4 +6,5 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
       build-essential gdb \
       clang clang-format clang-tidy lldb \
       cmake ninja-build pkg-config \
+      socat \
  && apt-get clean && rm -rf /var/lib/apt/lists/*

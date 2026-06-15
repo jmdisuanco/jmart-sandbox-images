@@ -6,7 +6,8 @@
 
 	// L2 — Zig (+ its bundled `zig cc` C compiler) via the community Feature.
 	"features": {
-		"ghcr.io/devcontainers-extra/features/zig:1": {}
+		"ghcr.io/devcontainers-extra/features/zig:1": {},
+		"ghcr.io/devcontainers-extra/features/apt-get-packages:1": { "packages": "socat" }
 	},
 
 	"remoteUser": "vscode"

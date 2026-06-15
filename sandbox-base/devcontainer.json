@@ -10,5 +10,11 @@
 	// L0 — one uniform base across every language image, pinned for reproducibility.
 	"image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
 
+	// socat — so the host serial service can be bridged to an in-container PTY (/dev/ttyJMART) over the
+	// sandbox exec channel, in ANY sandbox (not just the MCU images). Passed through our infra, no USB.
+	"features": {
+		"ghcr.io/devcontainers-extra/features/apt-get-packages:1": { "packages": "socat" }
+	},
+
 	"remoteUser": "vscode"
 }

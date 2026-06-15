@@ -10,7 +10,8 @@
 	// uv pulls prebuilt CPython, so version switching on create is fast (no source compile).
 	"features": {
 		"ghcr.io/devcontainers/features/python:1": { "version": "3.12" },
-		"ghcr.io/devcontainers-extra/features/uv:1": {}
+		"ghcr.io/devcontainers-extra/features/uv:1": {},
+		"ghcr.io/devcontainers-extra/features/apt-get-packages:1": { "packages": "socat" }
 	},
 
 	"remoteUser": "vscode"
